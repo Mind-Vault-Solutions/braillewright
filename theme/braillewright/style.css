@@ -3,7 +3,7 @@
 Theme Name: Braillewright
 Author: Aaron Di Blasi
 Description: Accessibility-first WordPress theme, maintained in-house. Forked from the GPL Period theme
-Version: 2.0.21
+Version: 2.0.22
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: two-columns, left-sidebar, right-sidebar, accessibility-ready, custom-logo, custom-menu, featured-images, full-width-template, rtl-language-support, sticky-post, theme-options, threaded-comments, translation-ready, blog, education, news
@@ -17,6 +17,78 @@ Distributed under the terms of the GNU GPL
 
 Braillewright is created and maintained by Aaron Di Blasi of Mind Vault Solutions, Ltd. on behalf of Top Tech Tidbits, with engineering support from Claude Code.
 */
+/*===== Dark Mode =====*/
+/* All theme colors live in these custom properties so one override block can
+   switch the whole theme between light and dark. Light values are the
+   original 2.0.21 colors, so the default rendering is unchanged. */
+:root {
+  --bw-text: #333333;
+  --bw-muted: #666666;
+  --bw-muted-2: #757575;
+  --bw-line: #D4D4D4;
+  --bw-bg: #EDEDED;
+  --bw-bg-soft: #F7F7F7;
+  --bw-surface: #ffffff;
+  --bw-ink: #242424;
+  --bw-on-ink: #D4D4D4;
+  color-scheme: light;
+}
+/* Manual choice: dark. Set via the toggle button (stored) or the early
+   inline script in <head> (painted before first render, no flash). */
+:root[data-theme="dark"] {
+  --bw-text: #D9D9D9;
+  --bw-muted: #ABABAB;
+  --bw-muted-2: #9E9E9E;
+  --bw-line: #404040;
+  --bw-bg: #1A1A1A;
+  --bw-bg-soft: #262626;
+  --bw-surface: #0F0F0F;
+  --bw-ink: #1A1A1A;
+  --bw-on-ink: #D4D4D4;
+  color-scheme: dark;
+}
+/* System default: follow the OS when the visitor has not chosen manually. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bw-text: #D9D9D9;
+    --bw-muted: #ABABAB;
+    --bw-muted-2: #9E9E9E;
+    --bw-line: #404040;
+    --bw-bg: #1A1A1A;
+    --bw-bg-soft: #262626;
+    --bw-surface: #0F0F0F;
+    --bw-ink: #1A1A1A;
+    color-scheme: dark;
+  }
+}
+/* Theme toggle button: fixed in the lower right corner. */
+.bw-theme-toggle {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 9999;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 2px solid var(--bw-text);
+  background: var(--bw-surface);
+  color: var(--bw-text);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+.bw-theme-toggle:hover,
+.bw-theme-toggle:focus {
+  outline: 2px solid var(--bw-text);
+  outline-offset: 2px;
+}
+.bw-theme-toggle .bw-theme-toggle-icon {
+  pointer-events: none;
+}
 /*===== Variables =====*/
 /* Theme Colors */
 /* Media Query widths */
@@ -63,13 +135,13 @@ textarea, .wp-caption-text,
 }
 
 .menu-primary a, .social-media-icons a, .site-title a, .site-footer a {
-  color: white;
+  color: var(--bw-on-ink);
 }
 .menu-primary a:link, .social-media-icons a:link, .site-title a:link, .site-footer a:link, .menu-primary a:visited, .social-media-icons a:visited, .site-title a:visited, .site-footer a:visited {
-  color: white;
+  color: var(--bw-on-ink);
 }
 .menu-primary a:hover, .social-media-icons a:hover, .site-title a:hover, .site-footer a:hover, .menu-primary a:active, .social-media-icons a:active, .site-title a:active, .site-footer a:active, .menu-primary a:focus, .social-media-icons a:focus, .site-title a:focus, .site-footer a:focus {
-  color: #D4D4D4;
+  color: var(--bw-on-ink);
 }
 
 .sidebar-primary .widget, .search-bottom, .pagination, .comment-pagination, .comments-closed, .comments-number,
@@ -77,7 +149,7 @@ li.comment > article,
 li.pingback > article,
 .comment-respond,
 #disqus_thread {
-  background: white;
+  background: var(--bw-surface);
   box-shadow: 0 0 2px 0 rgba(58, 58, 58, 0.2);
   padding: 1.5em 4.6875375%;
 }
@@ -88,7 +160,7 @@ li.comment > article,
 li.pingback > article,
 .comment-respond,
 #disqus_thread {
-    background: white;
+    background: var(--bw-surface);
     box-shadow: 0 0 2px 0 rgba(58, 58, 58, 0.2);
     padding: 1.5em 7.50006%;
   }
@@ -107,8 +179,8 @@ body {
   padding: 0;
   font-family: "Roboto", "Open Sans", sans-serif;
   line-height: 1.5;
-  background: #EDEDED;
-  color: #333333;
+  background: var(--bw-bg);
+  color: var(--bw-text);
   -webkit-font-smoothing: subpixel-antialiased;
   word-wrap: break-word;
   -ms-word-wrap: break-word;
@@ -159,16 +231,16 @@ p {
 }
 
 a {
-  color: #333333;
+  color: var(--bw-text);
   text-decoration: none;
   -webkit-transition: 0.1s ease-in-out;
           transition: 0.1s ease-in-out;
 }
 a:link, a:visited {
-  color: #333333;
+  color: var(--bw-text);
 }
 a:hover, a:active, a:focus {
-  color: #757575;
+  color: var(--bw-muted-2);
 }
 
 h1, h2, h3, .comment-respond .comment-reply-title, h4, h5, h6 {
@@ -207,13 +279,13 @@ li li {
 pre {
   word-wrap: break-word;
   white-space: pre-wrap;
-  background: #F7F7F7;
-  border: solid 1px #EDEDED;
+  background: var(--bw-bg-soft);
+  border: solid 1px var(--bw-bg);
   padding: 0.75em;
 }
 
 code {
-  background: #F7F7F7;
+  background: var(--bw-bg-soft);
   padding: 0 0.375em;
 }
 
@@ -224,7 +296,7 @@ pre code {
 blockquote {
   margin: 1.5em 1.5em 1.5em 0;
   padding-left: 1.5em;
-  border-left: solid 3px #333333;
+  border-left: solid 3px var(--bw-text);
 }
 blockquote cite {
   display: block;
@@ -245,18 +317,18 @@ table {
 td,
 th {
   padding: 0.75em;
-  border: solid 1px #333333;
+  border: solid 1px var(--bw-text);
 }
 
 .wp-block-table {
   margin: 0;
 }
 .wp-block-table thead {
-  background: #F7F7F7;
+  background: var(--bw-bg-soft);
 }
 .wp-block-table td,
 .wp-block-table th {
-  border-color: #EDEDED;
+  border-color: var(--bw-bg);
 }
 .wp-block-table figcaption {
   text-align: center;
@@ -268,7 +340,7 @@ th {
 }
 .wp-block-table.is-style-stripes td,
 .wp-block-table.is-style-stripes th {
-  border-color: #EDEDED;
+  border-color: var(--bw-bg);
 }
 
 /* Images */
@@ -341,9 +413,9 @@ textarea {
   padding: 10px 12px;
   max-width: 27.75em;
   min-height: 37px;
-  background: #F7F7F7;
-  color: #333333;
-  border: solid 1px #D4D4D4;
+  background: var(--bw-bg-soft);
+  color: var(--bw-text);
+  border: solid 1px var(--bw-line);
   border-radius: 0;
   -webkit-appearance: none;
   -webkit-transition: background 0.2s;
@@ -357,9 +429,9 @@ input[type=search]:focus,
 input[type=tel]:focus,
 input[type=url]:focus,
 textarea:focus {
-  background: white;
-  border-color: #333333;
-  outline: 2px solid #333333;
+  background: var(--bw-surface);
+  border-color: var(--bw-text);
+  outline: 2px solid var(--bw-text);
   outline-offset: 1px;
 }
 
@@ -369,9 +441,9 @@ textarea {
   /* to hide scrollbar in IE */
 }
 textarea:focus {
-  background: white;
-  border-color: #333333;
-  outline: 2px solid #333333;
+  background: var(--bw-surface);
+  border-color: var(--bw-text);
+  outline: 2px solid var(--bw-text);
   outline-offset: 1px;
 }
 
@@ -379,8 +451,8 @@ input[type=submit] {
   font-family: "Roboto", "Open Sans", sans-serif;
   font-weight: 400;
   padding: 10px 12px;
-  color: #333333;
-  border: solid 1px #333333;
+  color: var(--bw-text);
+  border: solid 1px var(--bw-text);
   background: none;
   border-radius: 0;
   -webkit-appearance: none;
@@ -391,8 +463,8 @@ input[type=submit]:hover {
   cursor: pointer;
 }
 input[type=submit]:hover, input[type=submit]:active, input[type=submit]:focus {
-  background: #333333;
-  color: white;
+  background: var(--bw-ink);
+  color: var(--bw-on-ink);
 }
 
 input[type=search] {
@@ -401,22 +473,22 @@ input[type=search] {
 }
 
 ::-webkit-input-placeholder {
-  color: #666666;
+  color: var(--bw-muted);
   font-weight: 300;
 }
 
 :-moz-placeholder {
-  color: #666666;
+  color: var(--bw-muted);
   font-weight: 300;
 }
 
 ::-moz-placeholder {
-  color: #666666;
+  color: var(--bw-muted);
   font-weight: 300;
 }
 
 :-ms-input-placeholder {
-  color: #666666;
+  color: var(--bw-muted);
   font-weight: 300;
 }
 
@@ -454,10 +526,10 @@ a img {
   left: 0;
   display: block;
   text-align: center;
-  color: white !important;
+  color: var(--bw-on-ink) !important;
   z-index: 99;
   padding: 1.5em;
-  background: #242424;
+  background: var(--bw-ink);
   box-shadow: 0 2px 2px 0 rgba(41, 41, 41, 0.4);
   -webkit-transition: top 0.2s ease-in-out;
           transition: top 0.2s ease-in-out;
@@ -473,7 +545,7 @@ a img {
 
 /*
  * Breadcrumbs (inc/breadcrumbs.php). A card like the theme's other boxes, so the trail reads the
- * same on any header color: until 2.0.11 it was white text on the header band, and a long title
+ * same on any header color: until 2.0.11 it was var(--bw-surface) text on the header band, and a long title
  * wrapped off the band onto the gray page at 1.27:1. #breadcrumbs is Yoast SEO's own trail, kept
  * for sites that switched it on in Yoast, and styled the same way.
  */
@@ -482,9 +554,9 @@ a img {
   display: block;
   margin: 0 0 0.75em;
   padding: 0.625em 1.5em;
-  background: white;
+  background: var(--bw-surface);
   box-shadow: 0 0 2px 0 rgba(58, 58, 58, 0.2);
-  color: #333333;
+  color: var(--bw-text);
   font-size: 1em;
   font-weight: 400;
   line-height: 1.5;
@@ -655,13 +727,14 @@ a img {
 }
 .archive-header {
   margin-bottom: 0.75em;
-  color: white;
+  color: var(--bw-surface);
 }
 .archive-header h1,
 .archive-header h2 {
   display: inline-block;
   font-weight: 300;
-  background: #242424;
+  background: var(--bw-ink);
+  color: var(--bw-on-ink);
   padding: 6px 14px 6px 14px;
 }
 .archive-header h1 .query,
@@ -674,8 +747,8 @@ a img {
 .archive-header p {
   display: inline-block;
   margin: 0;
-  color: #D4D4D4;
-  background: #242424;
+  color: var(--bw-on-ink);
+  background: var(--bw-ink);
   padding: 6px 14px 6px 14px;
 }
 
@@ -685,7 +758,7 @@ a img {
 .archive-header h1 a,
 .archive-header h2,
 .archive-header h2 a {
-  color: #ffffff;
+  color: var(--bw-surface);
 }
 
 /* No-results search: show the message in the page body (light area) instead of
@@ -703,10 +776,10 @@ body.search-no-results .primary-container {
 .bw-search-empty {
   padding-top: 1.5em;
   margin-bottom: 2em;
-  color: #333333;
+  color: var(--bw-text);
 }
 .bw-search-empty-title {
-  color: #333333;
+  color: var(--bw-text);
   margin-bottom: 0.5em;
 }
 
@@ -721,15 +794,15 @@ body.search-no-results .primary-container {
 }
 
 .more-link {
-  border: solid 1px #333333;
+  border: solid 1px var(--bw-text);
   padding: 6px 12px;
   margin-right: 12px;
   -webkit-transition: all 0.2s;
           transition: all 0.2s;
 }
 .more-link:hover, .more-link:active, .more-link:focus {
-  color: white;
-  background: #333333;
+  color: var(--bw-on-ink);
+  background: var(--bw-ink);
 }
 
 .more-link-wrapper {
@@ -757,7 +830,7 @@ body.search-no-results .primary-container {
   position: absolute;
   top: 0.75em;
   left: -4px;
-  background: white;
+  background: var(--bw-surface);
 }
 
 .sticky-status {
@@ -766,7 +839,7 @@ body.search-no-results .primary-container {
   top: -1.5em;
   left: 0;
   padding: 0 12px 2px;
-  background: #D4D4D4;
+  background: var(--bw-line);
   font-weight: 400;
 }
 .search .entry.sticky {
@@ -823,7 +896,7 @@ body.search-no-results .primary-container {
 
 .comment-list .children {
   padding-left: 1.5em;
-  border-left: solid 1px #D4D4D4;
+  border-left: solid 1px var(--bw-line);
 }
 
 li.comment,
@@ -833,7 +906,7 @@ li.pingback {
 }
 li.comment.bypostauthor > article,
 li.pingback.bypostauthor > article {
-  border: solid 5px #D4D4D4;
+  border: solid 5px var(--bw-line);
 }
 
 .comment-author .avatar {
@@ -923,9 +996,9 @@ li.pingback > article {
 }
 .site-footer {
   text-align: center;
-  background: #333333;
+  background: var(--bw-ink);
   margin-top: 3.75em;
-  color: #D4D4D4;
+  color: var(--bw-on-ink);
   clear: both;
 }
 .site-footer a {
@@ -933,7 +1006,8 @@ li.pingback > article {
 }
 
 .design-credit {
-  background: #242424;
+  background: var(--bw-ink);
+  color: var(--bw-on-ink);
   padding: 9px 5.5556%;
   margin-top: 1.875em;
 }
@@ -942,9 +1016,9 @@ li.pingback > article {
   bottom: -45px;
   right: 0;
   z-index: 9;
-  background: #242424;
+  background: var(--bw-ink);
   border: none;
-  color: #fff;
+  color: var(--bw-on-ink);
   padding: 9px 0;
   width: 60px;
   -webkit-transition: background 0.2s, -webkit-transform 0.3s;
@@ -956,7 +1030,7 @@ li.pingback > article {
 }
 .scroll-to-top:hover {
   cursor: pointer;
-  background: #666666;
+  background: var(--bw-muted);
 }
 .scroll-to-top:hover i {
   -webkit-transform: translateY(-4px);
@@ -1013,7 +1087,7 @@ li.pingback > article {
  */
 #infinite-footer .blog-credits,
 #infinite-footer .blog-credits a {
-  color: #242424;
+  color: var(--bw-text);
 }
 #infinite-footer .blog-credits a {
   text-decoration: underline;
@@ -1101,8 +1175,8 @@ li.pingback > article {
 }
 
 .site-header {
-  background: #333333;
-  color: white;
+  background: var(--bw-ink);
+  color: var(--bw-on-ink);
   text-align: center;
   padding: 36px 5.5556% 5.25em;
 }
@@ -1119,7 +1193,7 @@ li.pingback > article {
   font-weight: 700;
 }
 .tagline {
-  color: #D4D4D4;
+  color: var(--bw-line);
   margin: 0;
 }
 
@@ -1242,7 +1316,7 @@ li.pingback > article {
 .pagination a.current,
 .pagination span.current {
   padding: 2px 8px;
-  background: #EDEDED;
+  background: var(--bw-bg);
 }
 
 @media all and (min-width: 37.5em) {
@@ -1279,7 +1353,7 @@ li.pingback > article {
 }
 
 .menu-primary {
-  color: white;
+  color: var(--bw-surface);
   margin: 1.5em 0 2.25em;
   /***** Tier 2 *****/
 }
@@ -1294,10 +1368,10 @@ li.pingback > article {
   margin-bottom: 0;
 }
 .menu-primary li.current-menu-item > a, .menu-primary li.current_page_item > a, .menu-primary li.current-menu-ancestor > a {
-  background: #242424;
+  background: var(--bw-ink);
 }
 .menu-primary li.current-menu-item > a:hover, .menu-primary li.current-menu-item > a:active, .menu-primary li.current-menu-item > a:focus, .menu-primary li.current_page_item > a:hover, .menu-primary li.current_page_item > a:active, .menu-primary li.current_page_item > a:focus, .menu-primary li.current-menu-ancestor > a:hover, .menu-primary li.current-menu-ancestor > a:active, .menu-primary li.current-menu-ancestor > a:focus {
-  background: white;
+  background: var(--bw-surface);
 }
 .menu-primary a {
   position: relative;
@@ -1312,8 +1386,8 @@ li.pingback > article {
           backface-visibility: hidden;
 }
 .menu-primary a:hover, .menu-primary a:active, .menu-primary a:focus {
-  color: #333333;
-  background: white;
+  color: var(--bw-text);
+  background: var(--bw-surface);
 }
 /* Touch screens: a menu link changes to its tapped colors at once, with no fade and no gray tap veil.
    A light tap opens the next page within about 50 to 100 ms, while the fade above takes 200 ms, so the
@@ -1353,9 +1427,9 @@ li.pingback > article {
   font-size: 1em;
   margin: 0 -26px 0 2px;
   padding: 2px 6px;
-  border: solid 1px #D4D4D4;
+  border: solid 1px var(--bw-line);
   background: none;
-  color: white;
+  color: var(--bw-surface);
 }
 .menu-primary .toggle-dropdown:hover {
   cursor: pointer;
@@ -1400,22 +1474,22 @@ li.pingback > article {
             transition: all 0.2s;
   }
   .menu-primary li:hover, .menu-primary li:active {
-    color: #333333;
-    background: white;
+    color: var(--bw-text);
+    background: var(--bw-surface);
   }
   .menu-primary li:hover > a, .menu-primary li:active > a {
-    color: #333333;
-    background: white;
+    color: var(--bw-text);
+    background: var(--bw-surface);
   }
   /* A CURRENT top-level item whose dropdown is hovered looks like any hovered item (2.0.20). The rule above ties
      with "Primary Menu Current Background" (.menu-primary li.current-menu-item > a), which is printed inline AFTER
      this file, so the current background stayed while the text took the hover color: black on black on
-     donnajodhan.com /balados/ (current #000000, hover text #000000), dark blue on #242424 on barrierfreecanada.org.
+     donnajodhan.com /balados/ (current #000000, hover text #000000), dark blue on var(--bw-ink) on barrierfreecanada.org.
      These selectors are one class stronger, and are exactly the selectors of the inline "Primary Menu Background
      on Hover" rule, which is printed later, so a site that chose a hover background still gets it. Top level only:
      a current item inside a dropdown keeps the Dropdown Menus hover colors. */
   .menu-primary-items > li.current-menu-item:hover > a, .menu-unset > ul > li.current_page_item:hover > a {
-    background: white;
+    background: var(--bw-surface);
   }
   .menu-primary ul ul {
     position: absolute;
@@ -1424,7 +1498,7 @@ li.pingback > article {
     top: calc(100% + 4px);
     max-height: none;
     overflow: visible;
-    background: white;
+    background: var(--bw-surface);
     left: 0;
     opacity: 0;
     visibility: hidden;
@@ -1448,11 +1522,11 @@ li.pingback > article {
     font-weight: 700;
   }
   .menu-primary ul ul a {
-    color: #333333;
+    color: var(--bw-text);
     width: 100%;
   }
   .menu-primary ul ul a:link, .menu-primary ul ul a:visited {
-    color: #333333;
+    color: var(--bw-text);
   }
   .menu-primary li {
     display: inline-block;
@@ -1549,7 +1623,7 @@ li.pingback > article {
   margin-bottom: 1.5em;
 }
 .entry > article {
-  background: white;
+  background: var(--bw-surface);
   box-shadow: 0 0 2px 0 rgba(58, 58, 58, 0.2);
 }
 
@@ -1581,7 +1655,7 @@ li.pingback > article {
   right: 0;
   bottom: 0;
   left: 0;
-  background: white;
+  background: var(--bw-surface);
   opacity: 0;
   -webkit-transition: opacity 0.1s ease-in-out;
           transition: opacity 0.1s ease-in-out;
@@ -1618,17 +1692,17 @@ li.pingback > article {
   bottom: 0;
   text-align: center;
   background: rgba(0, 0, 0, 0.7);
-  color: white;
+  color: var(--bw-surface);
   padding: 4px 4px 4px 12px;
   font-size: 13px;
 }
 .featured-image .ccfic a {
-  color: #fff;
+  color: var(--bw-surface);
   text-decoration: underline;
   margin-left: 4px;
 }
 .featured-image .ccfic a:link, .featured-image .ccfic a:visited {
-  color: #fff;
+  color: var(--bw-surface);
 }
 
 .post-header {
@@ -1693,14 +1767,14 @@ li.pingback > article {
 .post-tags a {
   display: inline-block;
   padding: 0 12px;
-  border: solid 1px #333333;
+  border: solid 1px var(--bw-text);
   margin: 0 6px 6px 0;
   -webkit-transition: all 0.2s;
           transition: all 0.2s;
 }
 .post-tags a:hover, .post-tags a:active, .post-tags a:focus {
-  background: #333333;
-  color: white;
+  background: var(--bw-ink);
+  color: var(--bw-on-ink);
 }
 
 .further-reading .previous {
@@ -1758,14 +1832,14 @@ li.pingback > article {
 .wp-block-button a {
   font-weight: 400;
   text-decoration: none;
-  color: #fff;
+  color: var(--bw-surface);
 }
 .wp-block-button a:link, .wp-block-button a:visited {
-  color: #fff;
+  color: var(--bw-surface);
 }
 
 .wp-block-social-links a {
-  color: #fff;
+  color: var(--bw-surface);
 }
 
 @media all and (min-width: 37.5em) {
@@ -1841,16 +1915,16 @@ li.pingback > article {
   cursor: pointer;
 }
 .site-header .search-form-container button:hover i, .site-header .search-form-container button:active i, .site-header .search-form-container button:focus i {
-  color: #D4D4D4;
+  color: var(--bw-line);
 }
 .site-header .search-form-container button.open i {
-  color: #333333;
+  color: var(--bw-text);
 }
 .site-header .search-form-container button.open + form {
   opacity: 1;
 }
 .site-header .search-form-container i {
-  color: white;
+  color: var(--bw-surface);
   z-index: -1;
   -webkit-transition: all 0.2s;
           transition: all 0.2s;
@@ -1884,8 +1958,8 @@ li.pingback > article {
   height: 0;
 }
 .site-header .search-form-container .search-field:focus {
-  background: white !important;
-  outline: solid 1px #EDEDED !important;
+  background: var(--bw-surface) !important;
+  outline: solid 1px var(--bw-bg) !important;
   -webkit-animation: pulse 1s infinite;
           animation: pulse 1s infinite;
 }
@@ -1917,24 +1991,24 @@ li.pingback > article {
 }
 @-webkit-keyframes pulse {
   0% {
-    outline-color: #333333;
+    outline-color: var(--bw-text);
   }
   50% {
-    outline-color: #EDEDED;
+    outline-color: var(--bw-bg);
   }
   100% {
-    outline-color: #333333;
+    outline-color: var(--bw-text);
   }
 }
 @keyframes pulse {
   0% {
-    outline-color: #333333;
+    outline-color: var(--bw-text);
   }
   50% {
-    outline-color: #EDEDED;
+    outline-color: var(--bw-bg);
   }
   100% {
-    outline-color: #333333;
+    outline-color: var(--bw-text);
   }
 }
 .search-bottom p {
@@ -1987,16 +2061,16 @@ li.pingback > article {
   text-align: center;
 }
 .widget_calendar thead {
-  background: #EDEDED;
+  background: var(--bw-bg);
 }
 .widget_calendar th,
 .widget_calendar tr,
 .widget_calendar td {
-  border-color: #D4D4D4;
+  border-color: var(--bw-line);
 }
 .widget_calendar #today {
-  background: #333333;
-  color: white;
+  background: var(--bw-ink);
+  color: var(--bw-on-ink);
 }
 .widget_calendar #prev,
 .widget_calendar #next,
@@ -2016,7 +2090,7 @@ li.pingback > article {
 .widget_calendar .pad a:hover,
 .widget_calendar .pad a:active,
 .widget_calendar .pad a:focus {
-  background: #EDEDED;
+  background: var(--bw-bg);
 }
 
 .widget_nav_menu .current-menu-item > a {
@@ -2065,7 +2139,7 @@ li.pingback > article {
 }
 .widget_rss .rssSummary {
   margin: 0.75em 1.5em;
-  color: #666666;
+  color: var(--bw-muted);
 }
 .widget_rss .rssSummary + cite {
   display: block;
@@ -2095,7 +2169,7 @@ li.pingback > article {
 
 .woocommerce .entry {
   padding: 1.5em 5.5556%;
-  background: white;
+  background: var(--bw-surface);
 }
 .woocommerce a {
   border-bottom: none;
@@ -2123,7 +2197,7 @@ li.pingback > article {
 .woocommerce .comment-reply-title {
   display: block;
   margin-bottom: 12px;
-  color: #242424;
+  color: var(--bw-text);
   font-weight: 700;
 }
 .woocommerce .comment-respond {
@@ -2236,12 +2310,12 @@ li.pingback > article {
 
 .woocommerce-account .woocommerce {
   position: relative;
-  border: solid 1px #F7F7F7;
+  border: solid 1px var(--bw-bg-soft);
   border-radius: 6px;
   min-height: 260px;
 }
 .woocommerce-account .woocommerce-MyAccount-navigation {
-  background: #F7F7F7;
+  background: var(--bw-bg-soft);
   padding: 1.5em;
 }
 .woocommerce-account .woocommerce-MyAccount-navigation ul {
@@ -2296,12 +2370,12 @@ li.pingback > article {
 .post-type-archive-product.woocommerce .loop-container,
 .archive.woocommerce .loop-container {
   padding: 24px 2.7778%;
-  background: #fff;
+  background: var(--bw-surface);
 }
 
 .bbpress .entry {
   padding: 1.5em;
-  background: white;
+  background: var(--bw-surface);
   box-shadow: 0 0 2px 0 rgba(58, 58, 58, 0.2);
 }
 
@@ -2319,7 +2393,7 @@ div.bbp-breadcrumb {
 span.bbp-admin-links,
 span.bbp-admin-links a,
 .bbp-reply-header a.bbp-reply-permalink {
-  color: #666666;
+  color: var(--bw-muted);
 }
 
 #bbpress-forums p.bbp-topic-meta img.avatar,
@@ -2334,6 +2408,14 @@ span.bbp-admin-links a,
 
 .bbp-form textarea {
   max-width: none;
+}
+
+/* Mobile menu: larger, more readable links when the menu is expanded. */
+@media all and (max-width: 56.1875em) {
+  .menu-primary a {
+    font-size: 1.125em;
+    padding: 12px 8px;
+  }
 }
 
 /*
