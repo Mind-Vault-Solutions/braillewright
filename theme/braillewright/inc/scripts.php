@@ -114,8 +114,49 @@ function braillewright_load_scripts_styles() {
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
+
+	// Dark mode toggle (2.0.22): vanilla JS, no dependencies, loaded in the footer.
+	wp_enqueue_script(
+		'braillewright-dark-mode',
+		get_template_directory_uri() . '/js/dark-mode.js',
+		array(),
+		braillewright_asset_version( get_template_directory() . '/js/dark-mode.js' ),
+		true
+	);
 }
 add_action( 'wp_enqueue_scripts', 'braillewright_load_scripts_styles' );
+
+/**
+ * Dark mode (2.0.22): paint the stored theme before first render.
+ *
+ * The toggle button stores the visitor's choice in localStorage. This tiny
+ * inline script runs in <head> before the stylesheet, so a returning visitor
+ * who chose dark never sees a flash of light. When nothing is stored, the
+ * CSS media query follows the operating system instead.
+ */
+function braillewright_dark_mode_early_script() {
+	?>
+<script>
+(function(){try{var t=localStorage.getItem('bw-theme');if(t==='dark'||t==='light'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();
+</script>
+	<?php
+}
+add_action( 'wp_head', 'braillewright_dark_mode_early_script', 0 );
+
+/**
+ * Dark mode (2.0.22): the toggle button, fixed in the lower right corner.
+ *
+ * The accessible name is "Toggle theme, currently X". The button is a polite
+ * live region, so changing the name when the theme switches announces the new
+ * theme to screen readers. The icon and label are kept in sync by
+ * js/dark-mode.js; the default here matches the light theme.
+ */
+function braillewright_dark_mode_toggle_button() {
+	?>
+<button id="bw-theme-toggle" class="bw-theme-toggle" type="button" aria-label="Toggle theme, currently light" aria-live="polite"><span class="bw-theme-toggle-icon" aria-hidden="true">&#9789;</span></button>
+	<?php
+}
+add_action( 'wp_footer', 'braillewright_dark_mode_toggle_button' );
 
 // Back-end scripts
 function braillewright_enqueue_admin_styles( $hook ) {

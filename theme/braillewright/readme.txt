@@ -1,7 +1,7 @@
 === Braillewright ===
 Requires at least: 5.2
 Tested up to: 6.7
-Stable tag: 2.0.21
+Stable tag: 2.0.22
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: accessibility-ready, custom-logo, custom-menu, featured-images, two-columns, left-sidebar, right-sidebar
@@ -21,6 +21,11 @@ Forked from Period 1.750 (GPLv2-or-later) Source integrity hashes and full attri
 Braillewright is created and maintained by Aaron Di Blasi of Mind Vault Solutions, Ltd. on behalf of Top Tech Tidbits, with engineering support from Claude Code.
 
 == Changelog ==
+
+= 2.0.22 =
+* Dark mode. The theme follows the operating system's color scheme by default.
+* A toggle button fixed in the lower right corner switches themes manually; the choice is remembered for return visits.
+* The toggle's accessible name is "Toggle theme, currently X", and activating it announces the new theme to screen readers.
 
 = 2.0.21 =
 * Emoji in menu labels stay on screen for quick visual identification, but screen readers and braille displays skip them, so "News" followed by a newspaper is read as "News". A label that is only an emoji is left as it is.
