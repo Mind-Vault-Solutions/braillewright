@@ -262,7 +262,10 @@ if ( ! function_exists( 'braillewright_filter_read_more_link' ) ) {
 			return;
 		}
 		global $post;
-		$ismore             = strpos( $post->post_content, '<!--more-->' );
+		// There is no current post when an excerpt is built outside the loop: Yoast SEO builds each oEmbed
+		// answer's description with get_the_excerpt( $id ) on a REST request. Read the content only when
+		// there is a post; the output is the same as before (2.0.22, tools/check-read-more-outside-loop.php).
+		$ismore             = isset( $post->post_content ) ? strpos( $post->post_content, '<!--more-->' ) : false;
 		$read_more_text     = get_theme_mod( 'read_more_text' );
 		$new_excerpt_length = get_theme_mod( 'excerpt_length' );
 		$excerpt_more       = ( $new_excerpt_length === 0 ) ? '' : '&#8230;';

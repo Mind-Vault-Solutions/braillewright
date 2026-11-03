@@ -234,6 +234,15 @@ jobs:
       # carry a trail (the front page never does, by design). Added with the feature in 2.0.11.
       - name: Switch on the theme's breadcrumbs so pa11y checks them
         run: npx wp-env run cli wp theme mod set breadcrumbs yes
+      # Added 2026-11-03 with 2.0.22. The "Continue reading" filter read $post->post_content of the CURRENT
+      # post, and WordPress also runs it for an excerpt built outside the loop, where there is none: Yoast
+      # SEO's description on every oEmbed request (link previews) logged "Attempt to read property
+      # "post_content" on null ... functions.php on line 265", 1,151 times in 30 days on toptechtidbits.com.
+      # pa11y only loads pages, inside the loop, so nothing else here could see it. .wp-env.json maps tools/
+      # into the container. The check fails on 2.0.21: on TTT staging, and in run 41736010326 (PR #79's first
+      # commit, the check without the fix: "FAILED: 2 of 3 checks", exit code 1), 2026-11-03.
+      - name: The Continue reading filter raises no PHP warning outside the loop [BLOCKING]
+        run: npx wp-env run cli wp eval-file wp-content/braillewright-tools/check-read-more-outside-loop.php
       - name: pa11y-ci (WCAG2AA — axe + HTML_CodeSniffer) [BLOCKING]
         run: npx pa11y-ci --json > pa11y-report.json
       - name: Lighthouse CI (accessibility category)
