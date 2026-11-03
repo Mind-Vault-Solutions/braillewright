@@ -4,6 +4,9 @@
     "phpVersion": "8.3",
     "themes": [ "./theme/braillewright" ],
     "plugins": [],
+    "mappings": {
+        "wp-content/braillewright-tools": "./tools"
+    },
     "config": {
         "WP_DEBUG": true,
         "WP_DEBUG_DISPLAY": false,
