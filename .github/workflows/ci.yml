@@ -247,7 +247,8 @@ jobs:
       # "Continue reading" with substr( $d, 0, strpos( ... ) ), and strpos() is false when the words are absent,
       # so every description an author wrote came back EMPTY: no og:description and no oEmbed description on
       # 451 of 1,361 published posts and pages on toptechtidbits.com. Yoast is not needed: the filter is called
-      # directly. The check fails on 2.0.22 (4 of 8, measured on TTT staging, 2026-11-03).
+      # directly. The check fails on 2.0.22: on TTT staging, and in run 41743875728 (PR #80's first commit, the
+      # check without the fix: "FAILED: 4 of 8 checks", exit code 1), 2026-11-03.
       - name: The theme's Yoast description filter cuts only its own Continue reading tail [BLOCKING]
         run: npx wp-env run cli wp eval-file wp-content/braillewright-tools/check-yoast-og-description.php
       - name: pa11y-ci (WCAG2AA — axe + HTML_CodeSniffer) [BLOCKING]

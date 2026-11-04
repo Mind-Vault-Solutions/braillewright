@@ -337,15 +337,25 @@ if ( ! function_exists( 'braillewright_remove_more_link_scroll' ) ) {
 }
 add_filter( 'the_content_more_link', 'braillewright_remove_more_link_scroll' );
 
-// Yoast OG description has "Continue readingTitle of the Post" due to its use of get_the_excerpt(). This fixes that.
+// Yoast OG description has "Continue readingTitle of the Post" due to its use of get_the_excerpt(). This fixes that:
+// it cuts the theme's read-more text (as printed: through esc_html()) and the title after it. A description without
+// it, such as the one the author wrote, is returned unchanged. Until 2.0.23 the cut ran with strpos() false, which
+// made every such description empty (tools/check-yoast-og-description.php).
 function braillewright_update_yoast_og_description( $ogdesc ) {
 	$read_more_text = get_theme_mod( 'read_more_text' );
 	if ( empty( $read_more_text ) ) {
 		$read_more_text = esc_html__( 'Continue reading', 'braillewright' );
 	}
-	$ogdesc = substr( $ogdesc, 0, strpos( $ogdesc, $read_more_text ) );
+	$ogdesc = (string) $ogdesc;
+	$cut_at = false;
+	foreach ( array_unique( array( $read_more_text, esc_html( $read_more_text ) ) ) as $needle ) {
+		$found_at = strpos( $ogdesc, $needle );
+		if ( false !== $found_at && ( false === $cut_at || $found_at < $cut_at ) ) {
+			$cut_at = $found_at;
+		}
+	}
 
-	return $ogdesc;
+	return ( false === $cut_at ) ? $ogdesc : substr( $ogdesc, 0, $cut_at );
 }
 add_filter( 'wpseo_opengraph_desc', 'braillewright_update_yoast_og_description' );
 
