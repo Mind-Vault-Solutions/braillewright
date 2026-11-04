@@ -1,7 +1,7 @@
 === Braillewright ===
 Requires at least: 5.2
 Tested up to: 6.7
-Stable tag: 2.0.22
+Stable tag: 2.0.23
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: accessibility-ready, custom-logo, custom-menu, featured-images, two-columns, left-sidebar, right-sidebar
@@ -21,6 +21,10 @@ Forked from Period 1.750 (GPLv2-or-later) Source integrity hashes and full attri
 Braillewright is created and maintained by Aaron Di Blasi of Mind Vault Solutions, Ltd. on behalf of Top Tech Tidbits, with engineering support from Claude Code.
 
 == Changelog ==
+
+= 2.0.23 =
+* Link previews show the description you wrote again. With Yoast SEO, every post or page with its own meta description, and the front page, had no Open Graph description (og:description) and no link-preview (oEmbed) description at all, so Facebook, LinkedIn, Mastodon and the rest showed none. The theme's own filter cut Yoast's description at "Continue reading" and returned nothing when those words were not there. On toptechtidbits.com that was 451 of 1,361 published posts and pages.
+* Descriptions Yoast builds from the excerpt are unchanged: the "Continue reading" link text is still cut off them.
 
 = 2.0.22 =
 * No more PHP warning when an excerpt is built away from a list of posts. Yoast SEO does that for the description it adds to every link preview (oEmbed) of a post with no meta description of its own, and on toptechtidbits.com each one logged "Attempt to read property "post_content" on null" (1,151 times in 30 days, mostly link previews of older newsletters).
