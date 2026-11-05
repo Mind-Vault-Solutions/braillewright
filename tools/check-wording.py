@@ -117,6 +117,8 @@ BRITISH = {
     "channelled": "channeled", "marvelled": "marveled", "totalled": "totaled",
     "tunnelled": "tunneled", "quarrelled": "quarreled", "rivalled": "rivaled",
     "equalled": "equaled",
+    # 2026-11-04: "Duelling Duos" reached a Top Tech Tidbits headline from a YouTube title
+    "duelled": "dueled",
     # -ise verbs
     "accessorise": "accessorize", "agonise": "agonize", "anonymise": "anonymize",
     "antagonise": "antagonize", "apologise": "apologize", "capitalise": "capitalize",
@@ -251,6 +253,7 @@ def self_test():
         (british_findings("Link color, the gray page, a centered line"), False, "passes American spelling"),
         (british_findings("labelleaurore"), False, "does not match inside another word"),
         (british_findings("accessible maths for all"), True, "catches maths, from the newsletters' words"),
+        (british_findings("they duelled for the title"), True, "catches duelled, from a newsletter headline"),
         (title_case_problem("Link colour on hover"), True, "catches lower-case words"),
         (title_case_problem("Link Color On Hover"), True, "catches a capitalized small word"),
         (title_case_problem("Link Color on Hover"), False, "passes Link Color on Hover"),
