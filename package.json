@@ -22,7 +22,7 @@
         "check": "npm run check:css && npm run check:js && npm run check:assets"
     },
     "devDependencies": {
-        "@axe-core/cli": "^4.13.0",
+        "@axe-core/cli": "^4.14.0",
         "@lhci/cli": "^0.15.1",
         "@wordpress/env": "^11.13.0",
         "clean-css-cli": "^5.6.3",
