@@ -8,7 +8,7 @@
 				<div class="post-content">
 					<?php esc_html_e( 'Looks like nothing was found on this url.  Double-check that the url is correct or try the search form below to find what you were looking for.', 'braillewright' ); ?>
 				</div>
-				<?php get_search_form(); ?>
+				<?php get_search_form( array( 'aria_label' => __( 'Search the site', 'braillewright' ) ) ); ?>
 			</div>
 		</article>
 	</div>

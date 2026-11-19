@@ -38,12 +38,12 @@ function braillewright_options_content() {
 			</div>
 			<div class="dashboard-widget">
 				<h4>User Reviews</h4>
-				<img src="<?php echo esc_url( trailingslashit( get_template_directory_uri() ) . 'assets/images/reviews.png' ); ?>" />
+				<img src="<?php echo esc_url( trailingslashit( get_template_directory_uri() ) . 'assets/images/reviews.png' ); ?>" alt="<?php esc_attr_e( 'Rating summary: 5 out of 5 stars, from 31 five-star reviews and 2 four-star reviews.', 'braillewright' ); ?>" />
 				<p>Braillewright is maintained in-house. See the GitHub repository for the changelog and to file issues.</p>
 			</div>
 			<div class="dashboard-widget">
 				<h4>Reset Customizer Settings</h4>
-				<p><b>Warning:</b> Clicking this buttin will erase the Braillewright theme's current settings in the Customizer.</p>
+				<p><b>Warning:</b> Clicking this button will erase the Braillewright theme's current settings in the Customizer.</p>
 				<form method="post">
 					<input type="hidden" name="braillewright_reset_customizer" value="braillewright_reset_customizer_settings"/>
 					<p>

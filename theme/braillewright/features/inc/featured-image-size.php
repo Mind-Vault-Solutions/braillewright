@@ -25,6 +25,7 @@ function braillewright_features_fi_size_callback( $post ) {
 	$ratio = get_post_meta( $post->ID, 'braillewright_features_fi_size_key', true );
 	?>
 	<p>
+		<label class="screen-reader-text" for="braillewright-pro-fi-size"><?php esc_html_e( 'Featured Image Size', 'braillewright' ); ?></label>
 		<select name="braillewright-pro-fi-size" id="braillewright-pro-fi-size" style="box-sizing: border-box; width: 100%;">
 			<option value="default"><?php esc_html_e( 'Use size set in Customizer', 'braillewright' ); ?></option>
 			<option value="2-1" 
