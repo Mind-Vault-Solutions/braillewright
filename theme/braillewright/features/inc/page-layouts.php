@@ -25,6 +25,7 @@ function braillewright_features_post_layout_callback( $post ) {
 	$layout = get_post_meta( $post->ID, 'braillewright_features_post_layout_key', true );
 	?>
 	<p>
+		<label class="screen-reader-text" for="braillewright-pro-post-layout"><?php esc_html_e( 'Layout', 'braillewright' ); ?></label>
 		<select name="braillewright-pro-post-layout" id="braillewright-pro-post-layout" style="box-sizing: border-box; width: 100%;">
 			<option value="default"><?php esc_html_e( 'Use layout set in Customizer', 'braillewright' ); ?></option>
 			<option value="right" 

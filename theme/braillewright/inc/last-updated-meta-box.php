@@ -25,6 +25,7 @@ function braillewright_last_updated_callback( $post ) {
 
 	?>
 	<p>
+		<label class="screen-reader-text" for="braillewright-last-updated"><?php esc_html_e( 'Last Updated Date', 'braillewright' ); ?></label>
 		<select name="braillewright-last-updated" id="braillewright-last-updated" style="box-sizing: border-box; width: 100%;">
 			<option value="default"><?php esc_html_e( 'Use Customizer setting', 'braillewright' ); ?></option>
 			<option value="yes" 

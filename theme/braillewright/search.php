@@ -31,7 +31,7 @@
 					?>
 				</h1>
 				<p><?php esc_html_e( "We couldn't find anything matching that search. Try a different or more general term:", 'braillewright' ); ?></p>
-				<?php get_search_form(); ?>
+				<?php get_search_form( array( 'aria_label' => __( 'Search again', 'braillewright' ) ) ); ?>
 			</div>
 			<?php
 		endif;
@@ -46,7 +46,7 @@ if ( $braillewright_total_results ) {
 	?>
 	<div class="search-bottom">
 		<p><?php esc_html_e( "Can't find what you're looking for?  Try refining your search:", 'braillewright' ); ?></p>
-		<?php get_search_form(); ?>
+		<?php get_search_form( array( 'aria_label' => __( 'Refine your search', 'braillewright' ) ) ); ?>
 	</div>
 	<?php
 }
